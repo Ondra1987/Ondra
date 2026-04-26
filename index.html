@@ -326,7 +326,8 @@ function App() {
     if (!qrData.startsWith("KALORIE:")) return false;
     try {
       const b64 = qrData.slice("KALORIE:".length);
-      const json = atob(b64);
+      const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+      const json = new TextDecoder('utf-8').decode(bytes);
       const pokrm = JSON.parse(json);
       if (!pokrm.name || !pokrm.ingredients) return false;
       const suroviny = pokrm.ingredients.map(ing => ({
@@ -1544,7 +1545,6 @@ function App() {
     </div>
   );
 }
-
 
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
   </script>
